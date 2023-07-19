@@ -25,7 +25,7 @@ class TaskItem(models.Model):
     task_finished = models.BooleanField(default=True)
     status = models.CharField(max_length=20, choices=STATUS, default=DUE)
     estimated_time = models.IntegerField()
-    elapsed_time = models.IntegerField()
+    elapsed_time = models.IntegerField(default=0)
 
     def __str__(self):
         return f'{self.title}'
