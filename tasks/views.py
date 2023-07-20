@@ -1,5 +1,5 @@
 from django.views.generic import ListView, DetailView
-from django.views.generic.edit import CreateView
+from django.views.generic.edit import CreateView, UpdateView
 from .models import TaskItem
 
 # Create your views here.
@@ -14,4 +14,9 @@ class TaskDetailView(DetailView):
 class TaskCreateView(CreateView):
     model = TaskItem
     template_name = "task_new.html"
-    fields = ["title", "author", "body", "estimated_time", "due_date"]
+    fields = ["title", "author", "body", "status", "estimated_time", "due_date"]
+
+class TaskUpdateView(UpdateView):
+    model = TaskItem
+    template_name = "task_edit.html"
+    fields = ["title", "body", "status", "elapsed_time", "estimated_time", "due_date"]

@@ -8,4 +8,5 @@
   <p>Elapsed Time: {{ object.elapsed_time }}</p>
   <p>Due Date: {{ object.due_date }}</p>
 </div>
+<a href="{% url 'task_edit' object.pk %}">+ Edit Task</a>
 {% endblock content %}
