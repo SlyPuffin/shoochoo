@@ -8,5 +8,6 @@
   <p>Elapsed Time: {{ object.elapsed_time }}</p>
   <p>Due Date: {{ object.due_date }}</p>
 </div>
-<a href="{% url 'task_edit' object.pk %}">+ Edit Task</a>
+<p><a href="{% url 'task_edit' object.pk %}">+ Edit Task</a></p>
+<p><a href="{% url 'task_delete' object.pk %}">+ Delete Task</a></p>
 {% endblock content %}
