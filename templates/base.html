@@ -12,9 +12,11 @@
     <div class="nav-left">
       <h1><a href="{% url 'home' %}">ShooChoo To-Do</a></h1>
     </div>
+    {% if user.is_authenticated %}
     <div class="nav-right">
       <a href="{% url 'task_new' %}">+ New Task</a>
     </div>
+    {% endif %}
   </header>
   {% if user.is_authenticated %}
   <p>Hello {{ user.username }}!</p>
