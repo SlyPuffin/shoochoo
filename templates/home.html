@@ -1,11 +1,33 @@
-{% extends "base.html" %}
-{% block content %}
-{% for task in object_list %}
-<div class="list-item">
-  <h2><a href="{{ task.get_absolute_url }}">{{ task.title }}</a></h2>
-  <p>{{ task.body }}</p>
-  <p>{{ task.due_date }}</p>
-  <p>{{ task.status }}</p>
+{% extends "base.html" %} {% block content %}
+<div>
+  <table>
+    <thead>
+      <th>Tasks</th>
+      <th>Due Date</th>
+      <th>Status</th>
+      <th>Body</th>
+    </thead>
+    <tbody>
+      {% for task in object_list %}
+      <tr>
+        <td>
+          <h3><a href="{{ task.get_absolute_url }}">{{ task.title }}</a></h3>
+        </td>
+        <td>
+          <h4>{{ task.due_date }}</h4>
+        </td>
+        <td>
+          <h4>{{ task.status }}</h4>
+        </td>
+        <td>
+          <details>
+            <summary>Show Body...</summary>
+            <p>{{ task.body }}</p>
+          </details>
+        </td>
+      </tr>
+      {% endfor %}
+    </tbody>
+  </table>
 </div>
-{% endfor %}
 {% endblock content %}

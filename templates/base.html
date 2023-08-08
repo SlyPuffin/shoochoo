@@ -1,35 +1,56 @@
 <html>
-{% load static %}
+  {% load static %}
 
-<head>
-  <title>ShooChoo To-Do</title>
-  <link href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:400" rel="stylesheet">
-  <link rel="stylesheet" href="{% static 'css/base.css' %}">
-</head>
+  <head>
+    <title>ShooChoo To-Do</title>
+    <link
+      href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:400"
+      rel="stylesheet"
+    />
+    <link
+      rel="stylesheet"
+      href="https://cdn.jsdelivr.net/npm/water.css@2/out/water.min.css"
+    />
+    <style>
+      .nav {
+        text-align: left;
+        margin: 0;
+        padding: 0;
+      }
+      .nav li {
+        display: inline-block;
+        font-size: 18px;
+        padding-left: 10px;
+        padding-right: 10px;
+      }
+    </style>
+  </head>
 
-<body>
-  <header>
-    <div class="nav-left">
-      <h1><a href="{% url 'home' %}">ShooChoo To-Do</a></h1>
-    </div>
-    {% if user.is_authenticated %}
-    <div class="nav-right">
-      <a href="{% url 'task_new' %}">+ New Task</a>
-    </div>
-    {% endif %}
-  </header>
-  {% if user.is_authenticated %}
-  <p>Hello {{ user.username }}!</p>
-  <a href="{% url 'logout' %}">Log Out</a>
-  {% else %}
-  <p>You are not logged in.</p>
-  <a href="{% url 'login' %}">Log In</a>
-  <a href="{% url 'signup' %}">Sign Up</a>
-  {% endif %}
-  <div>
-    {% block content %}
-    {% endblock content %}
-  </div>
-</body>
-
+  <body>
+    <header>
+      {% if user.is_authenticated %}
+      <ul class="nav">
+        <li>
+          <h1><a href="{% url 'home' %}">ShooChoo To-Do</a></h2>
+        </li>
+        <li><p>Hello {{ user.username }}!</p></li>
+        <li><a href="{% url 'task_new' %}">+ New Task</a></li>
+        <li><a href="{% url 'logout' %}">Log Out</a></li>
+      </ul>
+      {% else %}
+      <ul class="nav">
+        <li>
+          <h1><a href="{% url 'home' %}">ShooChoo To-Do</a></h2>
+        </li>
+        <li><p>You are not logged in.</p></li>
+        <li>
+          <a href="{% url 'login' %}">Log In</a>
+        </li>
+        <li><a href="{% url 'signup' %}">Sign Up</a></li>
+      </ul>
+      {% endif %}
+    </header>
+    <hr />
+    <div>{% block content %} {% endblock content %}</div>
+  </body>
 </html>
