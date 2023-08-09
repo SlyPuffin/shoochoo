@@ -3,6 +3,8 @@ from django.views.generic.edit import CreateView, UpdateView, DeleteView
 from django.urls import reverse_lazy
 from django.contrib.auth.mixins import LoginRequiredMixin, UserPassesTestMixin
 from .models import TaskItem
+from .forms import TaskUpdateForm, TaskCreateForm
+
 
 # Create your views here.
 class TaskListView(LoginRequiredMixin, ListView):
@@ -24,7 +26,7 @@ class TaskDetailView(LoginRequiredMixin, DetailView):
 class TaskCreateView(LoginRequiredMixin, CreateView):
     model = TaskItem
     template_name = "task_new.html"
-    fields = ["title", "body", "status", "estimated_time", "due_date"]
+    form_class = TaskCreateForm
 
     def form_valid(self, form):
         form.instance.author = self.request.user
@@ -33,7 +35,7 @@ class TaskCreateView(LoginRequiredMixin, CreateView):
 class TaskUpdateView(LoginRequiredMixin, UserPassesTestMixin, UpdateView):
     model = TaskItem
     template_name = "task_edit.html"
-    fields = ["title", "body", "status", "elapsed_time", "estimated_time", "due_date"]
+    form_class = TaskUpdateForm
 
     def test_func(self):
         obj = self.get_object()

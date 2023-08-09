@@ -1,11 +1,19 @@
 {% extends "base.html" %} {% block content %}
-<div>
-  <table>
+<main class="task-list w-100 m-auto">
+  {% for task in object_list %}
+  <div class="row mb-3 text-center">
+    <div class="col-md-4 themed-grid-col">
+      <a href="{{ task.get_absolute_url }}">{{ task.title }}</a>
+    </div>
+    <div class="col-md-4 themed-grid-col">{{ task.due_date }}</div>
+    <div class="col-md-4 themed-grid-col">{{ task.status }}</div>
+  </div>
+  {% endfor %}
+  <!--<table>
     <thead>
       <th>Tasks</th>
       <th>Due Date</th>
       <th>Status</th>
-      <th>Body</th>
     </thead>
     <tbody>
       {% for task in object_list %}
@@ -19,15 +27,9 @@
         <td>
           <h4>{{ task.status }}</h4>
         </td>
-        <td>
-          <details>
-            <summary>Show Body...</summary>
-            <p>{{ task.body }}</p>
-          </details>
-        </td>
       </tr>
       {% endfor %}
     </tbody>
-  </table>
-</div>
+  </table>-->
+</main>
 {% endblock content %}

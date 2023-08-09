@@ -1,38 +1,53 @@
-body {
-    font-family: 'Source Sans Pro', sans-serif;
-    font-size: 18px;
+.form-signin {
+  max-width: 330px;
+  padding: 1rem;
 }
-header {
-    border-bottom: 1px solid #999;
-    margin-bottom: 2rem;
-    display: flex;
+
+.form-signin .form-floating:focus-within {
+  z-index: 2;
 }
-header h1 a {
-    color: red;
-    text-decoration: none;
+
+.form-signin input[type="text"] {
+  margin-bottom: -1px;
+  border-bottom-right-radius: 0;
+  border-bottom-left-radius: 0;
 }
-.nav-left {
-    margin-right: auto;
+
+.form-signin input[type="password"] {
+  margin-bottom: 10px;
+  border-top-left-radius: 0;
+  border-top-right-radius: 0;
 }
-.nav-right {
-    display: flex;
-    padding-top: 2rem;
+
+.form-task {
+  max-width: 330px;
+  padding: 1rem;
 }
-.task-entry {
-    margin-bottom: 2rem;
+
+.form-task .form-floating:focus-within {
+  z-index: 2;
 }
-.task-entry h2 {
-    margin: 0.5rem 0;
+
+.form-task input[type="text"] {
+  margin-bottom: -1px;
+  border-bottom-right-radius: 0;
+  border-bottom-left-radius: 0;
 }
-.task-entry h2 a,
-.task-entry h2 a:visited {
-    color: blue;
-    text-decoration: none;
+
+.form-task input[type="number"] {
+  margin-bottom: -1px;
+  border-bottom-right-radius: 0;
+  border-bottom-left-radius: 0;
 }
-.task-entry p {
-    margin 0;
-    font-weight: 400;
+
+.form-task select {
+  margin-bottom: -1px;
+  border-bottom-right-radius: 0;
+  border-bottom-left-radius: 0;
 }
-.task-entry h2 a:hover {
-    color: red;
+
+.form-task textarea {
+  margin-bottom: -1px;
+  border-bottom-right-radius: 0;
+  border-bottom-left-radius: 0;
 }

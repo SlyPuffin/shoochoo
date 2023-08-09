@@ -1,7 +1,22 @@
 {% extends "base.html" %} {% block content %}
-<h1>New Task</h1>
-<form action="" method="post">
-  {% csrf_token %} {{ form.as_p }}
-  <input type="submit" value="Save" />
-</form>
+<p><a href="{% url 'home' %}">← Back to Task List</a></p>
+<main class="form-task w-100 m-auto">
+  <h1>New Task</h1>
+  <form action="" method="post">
+    {% csrf_token %} {% for field in form %} {% if field.errors %}
+    <div class="form-floating error">
+      {{ field }}
+      <label>{{ field.label }}</label>
+    </div>
+    {% else %}
+    <div class="form-floating">
+      {{ field }}
+      <label>{{ field.label }}</label>
+    </div>
+    {% endif %} {% endfor %}
+    <div class="form-actions">
+      <button type="submit" class="btn btn-primary w-100 py-2">Save</button>
+    </div>
+  </form>
+</main>
 {% endblock content %}

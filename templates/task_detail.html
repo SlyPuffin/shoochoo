@@ -1,11 +1,12 @@
 {% extends "base.html" %} {% block content %}
-<div>
+<p><a href="{% url 'home' %}">← Back to Task List</a></p>
+<main class="form-task w-100 m-auto">
   <h2>{{ object.title }}</h2>
-  <p>{{ object.body }}</p>
+  <p style="white-space: pre">{{ object.body }}</p>
   <p>Estimated Time: {{ object.estimated_time }}</p>
   <p>Elapsed Time: {{ object.elapsed_time }}</p>
   <p>Due Date: {{ object.due_date }}</p>
-</div>
-<p><a href="{% url 'task_edit' object.pk %}">+ Edit Task</a></p>
-<p><a href="{% url 'task_delete' object.pk %}">+ Delete Task</a></p>
+  <p><a href="{% url 'task_edit' object.pk %}">+ Edit Task</a></p>
+  <p><a href="{% url 'task_delete' object.pk %}">+ Delete Task</a></p>
+</main>
 {% endblock content %}

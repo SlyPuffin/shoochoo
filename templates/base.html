@@ -1,15 +1,14 @@
-<html>
+<!DOCTYPE html>
+<html lang="en">
   {% load static %}
-
   <head>
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
     <title>ShooChoo To-Do</title>
     <link
-      href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:400"
+      href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/css/bootstrap.min.css"
       rel="stylesheet"
-    />
-    <link
-      rel="stylesheet"
-      href="https://cdn.jsdelivr.net/npm/water.css@2/out/water.min.css"
+      integrity="sha384-4bw+/aepP/YC94hEpVNVgiZdgIC5+VKNBQNGCHeKRQN+PtmoHDEXuppvnDJzQIu9"
+      crossorigin="anonymous"
     />
     <style>
       .nav {
@@ -23,34 +22,130 @@
         padding-left: 10px;
         padding-right: 10px;
       }
+      .task-list {
+        max-width: 990px;
+        padding: 1rem;
+      }
+
+      .themed-grid-col {
+        padding-top: 0.5rem;
+        padding-bottom: 0.25rem;
+        border: 1px dashed rgba(0, 0, 0, 0.2);
+      }
+
+      .form-signin {
+        max-width: 330px;
+        padding: 1rem;
+      }
+
+      .form-signin .form-floating:focus-within {
+        z-index: 2;
+      }
+
+      .form-signin input[type="text"] {
+        margin-bottom: -1px;
+        border-bottom-right-radius: 0;
+        border-bottom-left-radius: 0;
+      }
+
+      .form-signin input[type="password"] {
+        margin-bottom: 10px;
+        border-top-left-radius: 0;
+        border-top-right-radius: 0;
+      }
+
+      .form-task {
+        max-width: 550px;
+        padding: 1rem;
+      }
+
+      .form-task .form-floating:focus-within {
+        z-index: 2;
+      }
+
+      .form-task input[type="text"] {
+        margin-bottom: -1px;
+        border-bottom-right-radius: 0;
+        border-bottom-left-radius: 0;
+      }
+
+      .form-task input[type="number"] {
+        margin-bottom: -1px;
+        border-bottom-right-radius: 0;
+        border-bottom-left-radius: 0;
+      }
+
+      .form-task select {
+        margin-bottom: -1px;
+        border-bottom-right-radius: 0;
+        border-bottom-left-radius: 0;
+      }
+
+      .form-task textarea {
+        margin-bottom: -1px;
+        border-bottom-right-radius: 0;
+        border-bottom-left-radius: 0;
+      }
     </style>
   </head>
-
   <body>
-    <header>
-      {% if user.is_authenticated %}
-      <ul class="nav">
-        <li>
-          <h1><a href="{% url 'home' %}">ShooChoo To-Do</a></h2>
+    <script
+      src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/js/bootstrap.bundle.min.js"
+      integrity="sha384-HwwvtgBNo3bZJJLYd8oVXjrBZt8cqVSpeBNS5n7C8IVInixGAoxmnlMuBnhbgrkm"
+      crossorigin="anonymous"
+    ></script>
+    <header
+      class="d-flex flex-wrap justify-content-center py-3 mb-4 border-bottom"
+    >
+      <a
+        href="{% url 'home' %}"
+        class="d-flex align-items-center mb-3 mb-md-0 me-md-auto link-body-emphasis text-decoration-none"
+      >
+        <svg
+          xmlns="http://www.w3.org/2000/svg"
+          width="40"
+          height="32"
+          fill="currentColor"
+          class="bi me-2 bi-card-checklist"
+          viewBox="0 0 16 16"
+        >
+          <path
+            d="M14.5 3a.5.5 0 0 1 .5.5v9a.5.5 0 0 1-.5.5h-13a.5.5 0 0 1-.5-.5v-9a.5.5 0 0 1 .5-.5h13zm-13-1A1.5 1.5 0 0 0 0 3.5v9A1.5 1.5 0 0 0 1.5 14h13a1.5 1.5 0 0 0 1.5-1.5v-9A1.5 1.5 0 0 0 14.5 2h-13z"
+          />
+          <path
+            d="M7 5.5a.5.5 0 0 1 .5-.5h5a.5.5 0 0 1 0 1h-5a.5.5 0 0 1-.5-.5zm-1.496-.854a.5.5 0 0 1 0 .708l-1.5 1.5a.5.5 0 0 1-.708 0l-.5-.5a.5.5 0 1 1 .708-.708l.146.147 1.146-1.147a.5.5 0 0 1 .708 0zM7 9.5a.5.5 0 0 1 .5-.5h5a.5.5 0 0 1 0 1h-5a.5.5 0 0 1-.5-.5zm-1.496-.854a.5.5 0 0 1 0 .708l-1.5 1.5a.5.5 0 0 1-.708 0l-.5-.5a.5.5 0 0 1 .708-.708l.146.147 1.146-1.147a.5.5 0 0 1 .708 0z"
+          />
+        </svg>
+        <span class="fs-4">ShooChoo To-Do</span>
+      </a>
+
+      <ul class="nav nav-pills">
+        <li class="nav-item">
+          <a
+            href="{% url 'home' %}"
+            class="nav-link active"
+            aria-current="page"
+          >
+            Home
+          </a>
         </li>
-        <li><p>Hello {{ user.username }}!</p></li>
-        <li><a href="{% url 'task_new' %}">+ New Task</a></li>
-        <li><a href="{% url 'logout' %}">Log Out</a></li>
+        {% if user.is_authenticated %}
+        <li class="nav-item">
+          <a href="{% url 'task_new' %}" class="nav-link">+ New Task</a>
+        </li>
+        <li class="nav-item">
+          <a href="{% url 'logout' %}" class="nav-link">Log Out</a>
+        </li>
+        {% else %}
+        <li class="nav-item">
+          <a href="{% url 'login' %}" class="nav-link">Log In</a>
+        </li>
+        <li class="nav-item">
+          <a href="{% url 'signup' %}" class="nav-link">Sign Up</a>
+        </li>
+        {% endif %}
       </ul>
-      {% else %}
-      <ul class="nav">
-        <li>
-          <h1><a href="{% url 'home' %}">ShooChoo To-Do</a></h2>
-        </li>
-        <li><p>You are not logged in.</p></li>
-        <li>
-          <a href="{% url 'login' %}">Log In</a>
-        </li>
-        <li><a href="{% url 'signup' %}">Sign Up</a></li>
-      </ul>
-      {% endif %}
     </header>
-    <hr />
     <div>{% block content %} {% endblock content %}</div>
   </body>
 </html>

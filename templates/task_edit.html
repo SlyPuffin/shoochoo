@@ -1,9 +1,22 @@
-{% extends "base.html" %}
-
-{% block content %}
-<h1>Edit Task</h1>
-<form action="" method="post">{% csrf_token %}
-  {{ form.as_p }}
-  <input type="submit" value="Update">
-</form>
+{% extends "base.html" %} {% block content %}
+<p><a href="{% url 'task_detail' object.pk %}">← Back to Task Detail</a></p>
+<main class="form-task w-100 m-auto">
+  <h1>Edit Task</h1>
+  <form action="" method="post">
+    {% csrf_token %} {% for field in form %} {% if field.errors %}
+    <div class="form-floating error">
+      {{ field }}
+      <label>{{ field.label }}</label>
+    </div>
+    {% else %}
+    <div class="form-floating">
+      {{ field }}
+      <label>{{ field.label }}</label>
+    </div>
+    {% endif %} {% endfor %}
+    <div class="form-actions">
+      <button type="submit" class="btn btn-primary w-100 py-2">Update</button>
+    </div>
+  </form>
+</main>
 {% endblock content %}
