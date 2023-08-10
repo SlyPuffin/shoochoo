@@ -1,35 +1,51 @@
 {% extends "base.html" %} {% block content %}
 <main class="task-list w-100 m-auto">
   {% for task in object_list %}
-  <div class="row mb-3 text-center">
-    <div class="col-md-4 themed-grid-col">
-      <a href="{{ task.get_absolute_url }}">{{ task.title }}</a>
+  <div class="container text-center border border-secondary task-row rounded-3">
+    <div class="row task-row-element">
+      <h1 class="col"><strong>{{ task.title }}</strong></h1>
     </div>
-    <div class="col-md-4 themed-grid-col">{{ task.due_date }}</div>
-    <div class="col-md-4 themed-grid-col">{{ task.status }}</div>
+    <div class="row">
+      <h4 class="col text-body-secondary">{{ task.status }}</h4>
+      <a
+        href="{% url 'task_focus' task.pk}"
+        role="button"
+        class="col focus-button btn btn-outline-primary"
+        >Focus</a
+      >
+      <h4 class="col text-body-secondary">{{ task.due_date }}</h4>
+    </div>
+    <div
+      class="btn-group task-row-element"
+      role="group"
+      aria-label="Task Buttons"
+    >
+      <a
+        href="{% url 'task_edit' task.pk}"
+        role="button"
+        class="btn btn-outline-success"
+        >Complete</a
+      >
+      <a
+        href="{{ task.get_absolute_url }}"
+        role="button"
+        class="btn btn-outline-info"
+        >Details</a
+      >
+      <a
+        href="{% url 'task_edit' task.pk %}"
+        role="button"
+        class="btn btn-outline-secondary"
+        >Edit</a
+      >
+      <a
+        href="{% url 'task_delete' task.pk %}"
+        role="button"
+        class="btn btn-outline-danger"
+        >Delete</a
+      >
+    </div>
   </div>
   {% endfor %}
-  <!--<table>
-    <thead>
-      <th>Tasks</th>
-      <th>Due Date</th>
-      <th>Status</th>
-    </thead>
-    <tbody>
-      {% for task in object_list %}
-      <tr>
-        <td>
-          <h3><a href="{{ task.get_absolute_url }}">{{ task.title }}</a></h3>
-        </td>
-        <td>
-          <h4>{{ task.due_date }}</h4>
-        </td>
-        <td>
-          <h4>{{ task.status }}</h4>
-        </td>
-      </tr>
-      {% endfor %}
-    </tbody>
-  </table>-->
 </main>
 {% endblock content %}

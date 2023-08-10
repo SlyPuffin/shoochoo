@@ -23,6 +23,14 @@ class TaskDetailView(LoginRequiredMixin, DetailView):
         obj = self.get_object()
         return obj.author == self.request.user
 
+class TaskFocusView(LoginRequiredMixin, DetailView):
+    model = TaskItem
+    template_name = "task_focus.html"
+
+    def test_func(self):
+        obj = self.get_object()
+        return obj.author == self.request.user
+
 class TaskCreateView(LoginRequiredMixin, CreateView):
     model = TaskItem
     template_name = "task_new.html"

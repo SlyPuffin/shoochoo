@@ -1,12 +1,42 @@
 {% extends "base.html" %} {% block content %}
-<p><a href="{% url 'home' %}">← Back to Task List</a></p>
-<main class="form-task w-100 m-auto">
+<main class="form-task text-center w-100 m-auto">
+  <p><a href="{% url 'home' %}">← Back to Task List</a></p>
   <h2>{{ object.title }}</h2>
   <p style="white-space: pre">{{ object.body }}</p>
-  <p>Estimated Time: {{ object.estimated_time }}</p>
-  <p>Elapsed Time: {{ object.elapsed_time }}</p>
-  <p>Due Date: {{ object.due_date }}</p>
-  <p><a href="{% url 'task_edit' object.pk %}">+ Edit Task</a></p>
-  <p><a href="{% url 'task_delete' object.pk %}">+ Delete Task</a></p>
+  <a
+    href="{% url 'task_focus' object.pk %}"
+    role="button"
+    class="focus-button btn btn-outline-primary"
+    >Focus</a
+  >
+  <div class="row">
+    <p class="col-md">Estimated Time: {{ object.estimated_time }}</p>
+    <p class="col-md">Elapsed Time: {{ object.elapsed_time }}</p>
+    <p class="col-md">Due: {{ object.due_date }}</p>
+  </div>
+  <div
+    class="btn-group task-row-element"
+    role="group"
+    aria-label="Task Buttons"
+  >
+    <a
+      href="{% url 'task_edit' object.pk %}"
+      role="button"
+      class="btn btn-outline-success"
+      >Complete</a
+    >
+    <a
+      href="{% url 'task_edit' object.pk %}"
+      role="button"
+      class="btn btn-outline-secondary"
+      >Edit Task</a
+    >
+    <a
+      href="{% url 'task_delete' object.pk %}"
+      role="button"
+      class="btn btn-outline-danger"
+      >Delete Task</a
+    >
+  </div>
 </main>
 {% endblock content %}

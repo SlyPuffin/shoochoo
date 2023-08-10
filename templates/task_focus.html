@@ -1,0 +1,66 @@
+{% extends "base.html" %} {% block content %}
+<script>
+  function makeTimer(endTime) {
+    var now = new Date();
+    var now = Date.parse(now) / 1000;
+    var timeLeft = endTime - now;
+
+    var days = Math.floor(timeLeft / 86400);
+    var hours = Math.floor((timeLeft - days * 86400) / 3600);
+    var minutes = Math.floor((timeLeft - days * 86400 - hours * 3600) / 60);
+    var seconds = Math.floor(
+      timeLeft - days * 86400 - hours * 3600 - minutes * 60
+    );
+
+    if (minutes < "10") {
+      minutes = "0" + minutes;
+    }
+    if (seconds < "10") {
+      seconds = "0" + seconds;
+    }
+
+    //$("#remaining-time").html(minutes + ":" + seconds);
+    console.log("remaining time: " + minutes + ":" + seconds);
+    document.getElementById("remaining-time").innerHTML =
+      minutes + ":" + seconds;
+  }
+
+  var now = new Date();
+  const diff = 15;
+  var endTime = new Date(now.getTime() + diff * 60000);
+
+  var now = Date.parse(now) / 1000;
+  var endTime = Date.parse(endTime) / 1000;
+
+  setInterval(function () {
+    makeTimer(endTime);
+  }, 1000);
+</script>
+<main
+  class="h-100 focus-screen cover-container d-flex text-center p-3 flex-column"
+>
+  <p><a href="{% url 'home' %}">← Back to Task List</a></p>
+  <h1>{{ object.title }}</h1>
+  <p style="white-space: pre" class="lead">{{ object.body }}</p>
+  <div id="timer" class="lead">
+    <h1 id="remaining-time"></h1>
+    <!--<a
+      href="#"
+      role="button"
+      class="btn btn-lg btn-light fw-bold border-secondary bg-white"
+      >Complete</a
+    >-->
+  </div>
+</main>
+
+<!--<main class="form-task w-100 m-auto">
+  <p><a href="{% url 'home' %}">← Back to Task List</a></p>
+  <h2>{{ object.title }}</h2>
+  <p style="white-space: pre">{{ object.body }}</p>
+  <p>Estimated Time: {{ object.estimated_time }}</p>
+  <p>Elapsed Time: {{ object.elapsed_time }}</p>
+  <p>Due Date: {{ object.due_date }}</p>
+  <p><a href="{% url 'task_edit' object.pk %}">+ Edit Task</a></p>
+  <p><a href="{% url 'task_delete' object.pk %}">+ Delete Task</a></p>
+</main>-->
+{% endblock content %}

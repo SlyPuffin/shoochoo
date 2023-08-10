@@ -1,6 +1,6 @@
 {% extends "base.html" %} {% block content %}
-<p><a href="{% url 'home' %}">← Back to Task List</a></p>
 <main class="form-task w-100 m-auto">
+  <p><a href="{% url 'home' %}">← Back to Task List</a></p>
   <h1>New Task</h1>
   <form action="" method="post">
     {% csrf_token %} {% for field in form %} {% if field.errors %}
