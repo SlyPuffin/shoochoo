@@ -1,19 +1,16 @@
 from django.db import models
 from django.utils import timezone
 from django.urls import reverse
+from django.shortcuts import redirect
 
 # Create your models here.
 
 class TaskItem(models.Model):
     DUE = 'DUE'
-    FORREVIEW = 'FORREVIEW'
-    RESTING = 'RESTING'
-    RESCHEDULED = 'RESCHEDULED'
+    COMPLETE = 'COMPLETE'
     STATUS = (
         (DUE, DUE),
-        (FORREVIEW, FORREVIEW),
-        (RESTING, RESTING),
-        (RESCHEDULED, RESCHEDULED)
+        (COMPLETE, COMPLETE)
     )
     title = models.CharField(max_length=100, blank=True, null=True)
     author = models.ForeignKey(
@@ -32,3 +29,7 @@ class TaskItem(models.Model):
 
     def get_absolute_url(self):
         return reverse("task_detail", kwargs={"pk": self.pk})
+
+    def complete(self):
+        self.status = 'COMPLETE'
+        self.save(update_fields=["status"])

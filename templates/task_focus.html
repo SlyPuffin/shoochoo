@@ -4,7 +4,7 @@
 >
   <p><a href="{% url 'home' %}">← Back to Task List</a></p>
   <h1>{{ object.title }}</h1>
-  <p style="white-space: pre" class="lead">{{ object.body }}</p>
+  <p class="lead">{{ object.body|linebreaksbr }}</p>
   {% if object.estimated_time %}
   <div id="timer" class="lead">
     <h1 id="remaining-time">{{ object.estimated_time }}</h1>

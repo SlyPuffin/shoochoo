@@ -1,3 +1,16 @@
+# Env
 .venv/
-__pychache__/
+
+# Python
+*.pyc
+*~
+__pycache__
+
+# Database
 *.sqlite3
+
+# macOS
+._*
+.DS_Store
+.fseventsd
+.Spotlight-V100

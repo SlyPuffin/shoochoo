@@ -1,10 +1,15 @@
 from django.views.generic import ListView, DetailView
 from django.views.generic.edit import CreateView, UpdateView, DeleteView
 from django.urls import reverse_lazy
+from django.shortcuts import redirect, get_object_or_404
 from django.contrib.auth.mixins import LoginRequiredMixin, UserPassesTestMixin
 from .models import TaskItem
 from .forms import TaskUpdateForm, TaskCreateForm
 
+def task_complete(request, pk):
+    task = get_object_or_404(TaskItem, pk=pk)
+    task.complete()
+    return redirect('home')
 
 # Create your views here.
 class TaskListView(LoginRequiredMixin, ListView):
@@ -12,7 +17,7 @@ class TaskListView(LoginRequiredMixin, ListView):
     template_name = "home.html"
 
     def get_queryset(self):
-        return TaskItem.objects.filter(author=self.request.user)
+        return TaskItem.objects.filter(author=self.request.user).order_by('due_date')#.filter(status='DUE')
 
 
 class TaskDetailView(LoginRequiredMixin, DetailView):

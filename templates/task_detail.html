@@ -2,13 +2,15 @@
 <main class="form-task text-center w-100 m-auto">
   <p><a href="{% url 'home' %}">← Back to Task List</a></p>
   <h2>{{ object.title }}</h2>
-  <p style="white-space: pre">{{ object.body }}</p>
+  <p>{{ object.body|linebreaksbr }}</p>
+  {% if object.status == 'DUE' %}
   <a
     href="{% url 'task_focus' object.pk %}"
     role="button"
     class="focus-button btn btn-lg btn-outline-primary"
     >Focus</a
   >
+  {% endif %}
   <div class="row">
     <p class="col-md">Estimated Time: {{ object.estimated_time }}</p>
     <p class="col-md">Elapsed Time: {{ object.elapsed_time }}</p>
@@ -19,12 +21,14 @@
     role="group"
     aria-label="Task Buttons"
   >
+    {% if object.status == 'DUE' %}
     <a
       href="{% url 'task_edit' object.pk %}"
       role="button"
       class="btn btn-outline-success"
       >Complete</a
     >
+    {% endif %}
     <a
       href="{% url 'task_edit' object.pk %}"
       role="button"

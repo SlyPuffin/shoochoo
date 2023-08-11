@@ -1,6 +1,6 @@
 {% extends "base.html" %} {% block content %}
 <main class="task-list w-100 m-auto">
-  {% for task in object_list %}
+  {% for task in object_list %} {% if task.status == 'DUE' %}
   <div class="container text-center border border-secondary task-row rounded-3">
     <div class="row task-row-element">
       <h1 class="col"><strong>{{ task.title }}</strong></h1>
@@ -21,7 +21,7 @@
       aria-label="Task Buttons"
     >
       <a
-        href="{% url 'task_edit' task.pk %}"
+        href="{% url 'task_complete' task.pk %}"
         role="button"
         class="btn btn-outline-success"
         >Complete</a
@@ -46,6 +46,42 @@
       >
     </div>
   </div>
-  {% endfor %}
+  {% else %}
+  <div
+    class="container text-center border border-secondary task-row rounded-3 task-row-complete"
+  >
+    <div class="row task-row-element">
+      <h1 class="col"><strong>{{ task.title }}</strong></h1>
+    </div>
+    <div class="row">
+      <h4 class="col text-body-secondary">{{ task.status }}</h4>
+      <h4 class="col text-body-secondary">{{ task.due_date }}</h4>
+    </div>
+    <div
+      class="col btn-group task-row-element"
+      role="group"
+      aria-label="Task Buttons"
+    >
+      <a
+        href="{{ task.get_absolute_url }}"
+        role="button"
+        class="btn btn-outline-info"
+        >Details</a
+      >
+      <a
+        href="{% url 'task_edit' task.pk %}"
+        role="button"
+        class="btn btn-outline-secondary"
+        >Edit</a
+      >
+      <a
+        href="{% url 'task_delete' task.pk %}"
+        role="button"
+        class="btn btn-outline-danger"
+        >Delete</a
+      >
+    </div>
+  </div>
+  {% endif %} {% endfor %}
 </main>
 {% endblock content %}
