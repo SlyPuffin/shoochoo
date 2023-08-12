@@ -9,7 +9,11 @@ from .forms import TaskUpdateForm, TaskCreateForm
 def task_complete(request, pk):
     task = get_object_or_404(TaskItem, pk=pk)
     task.complete()
-    return redirect('home')
+    refererUrl = request.META.get('HTTP_REFERER')
+    if "focus" in refererUrl:
+        return redirect("task_detail", pk=pk)
+    else:
+        return redirect(request.META.get('HTTP_REFERER', 'home'))
 
 # Create your views here.
 class TaskListView(LoginRequiredMixin, ListView):

@@ -40,7 +40,7 @@
 .task-row {
   margin-bottom: 1rem;
 }
-.task-row-complete {
+.task-complete {
   background-color: rgb(229, 229, 247);
   opacity: 0.8;
   background-image: repeating-conic-gradient(

@@ -2,7 +2,7 @@
 <main
   class="h-100 focus-screen cover-container d-flex text-center p-3 flex-column"
 >
-  <p><a href="{% url 'home' %}">← Back to Task List</a></p>
+  <p><a href="{{ object.get_absolute_url }}">← Back to Task Details</a></p>
   <h1>{{ object.title }}</h1>
   <p class="lead">{{ object.body|linebreaksbr }}</p>
   {% if object.estimated_time %}
@@ -43,7 +43,7 @@
       }
       document.getElementById(
         "timer"
-      ).innerHTML = `<a href="#" role="button" class="btn btn-lg btn-outline-success">Complete</a>`;
+      ).innerHTML = `<a href="{% url 'task_complete' object.pk %}" role="button" class="btn btn-lg btn-outline-success">Complete</a>`;
     } else {
       document.getElementById("remaining-time").innerText =
         minutes + ":" + seconds;
