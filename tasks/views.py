@@ -22,7 +22,7 @@ class TaskListView(LoginRequiredMixin, ListView):
     template_name = "home.html"
 
     def get_queryset(self):
-        return TaskItem.objects.filter(author=self.request.user).order_by('due_date').filter(due_date__gte=datetime.now())#.filter(status='DUE')
+        return TaskItem.objects.filter(author=self.request.user).filter(due_date__gte=datetime.now()).extra(select={"status_order":"case when status='DUE' then 0 when status = 'COMPLETE' then 1 else 2 end"}).order_by('due_date', 'status_order')#.filter(status='DUE')
 
 
 class TaskDetailView(LoginRequiredMixin, DetailView):
