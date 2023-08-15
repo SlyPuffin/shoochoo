@@ -3,6 +3,7 @@ from django.views.generic.edit import CreateView, UpdateView, DeleteView
 from django.urls import reverse_lazy
 from django.shortcuts import redirect, get_object_or_404
 from django.contrib.auth.mixins import LoginRequiredMixin, UserPassesTestMixin
+from datetime import datetime
 from .models import TaskItem
 from .forms import TaskUpdateForm, TaskCreateForm
 
@@ -21,7 +22,7 @@ class TaskListView(LoginRequiredMixin, ListView):
     template_name = "home.html"
 
     def get_queryset(self):
-        return TaskItem.objects.filter(author=self.request.user).order_by('due_date')#.filter(status='DUE')
+        return TaskItem.objects.filter(author=self.request.user).order_by('due_date').filter(due_date__gte=datetime.now())#.filter(status='DUE')
 
 
 class TaskDetailView(LoginRequiredMixin, DetailView):
