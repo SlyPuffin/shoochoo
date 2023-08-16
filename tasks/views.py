@@ -6,6 +6,7 @@ from django.contrib.auth.mixins import LoginRequiredMixin, UserPassesTestMixin
 from datetime import datetime
 from .models import TaskItem
 from .forms import TaskUpdateForm, TaskCreateForm
+from django.utils import timezone
 
 def task_complete(request, pk):
     task = get_object_or_404(TaskItem, pk=pk)
@@ -22,7 +23,8 @@ class TaskListView(LoginRequiredMixin, ListView):
     template_name = "home.html"
 
     def get_queryset(self):
-        return TaskItem.objects.filter(author=self.request.user).filter(due_date__gte=datetime.now()).extra(select={"status_order":"case when status='DUE' then 0 when status = 'COMPLETE' then 1 else 2 end"}).order_by('due_date', 'status_order')#.filter(status='DUE')
+        today = timezone.datetime.today().replace(hour=0, minute=0, second=0, microsecond=0)
+        return TaskItem.objects.filter(author=self.request.user).filter(due_date__gte=today).extra(select={"status_order":"case when status='DUE' then 0 when status = 'COMPLETE' then 1 else 2 end"}).order_by('due_date', 'status_order')#.filter(status='DUE')
 
 
 class TaskDetailView(LoginRequiredMixin, DetailView):
