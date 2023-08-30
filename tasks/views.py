@@ -7,6 +7,7 @@ from datetime import datetime
 from .models import TaskItem
 from .forms import TaskUpdateForm, TaskCreateForm
 from django.utils import timezone
+from django.db.models import Q
 
 def task_complete(request, pk):
     task = get_object_or_404(TaskItem, pk=pk)
@@ -23,7 +24,7 @@ class TaskListView(LoginRequiredMixin, ListView):
 
     def get_queryset(self):
         today = timezone.datetime.today().replace(hour=0, minute=0, second=0, microsecond=0)
-        objects = TaskItem.objects.filter(author=self.request.user).extra(select={"status_order":"case when status='OVERDUE' then 0 when status = 'DUE' then 1 else 2 end"}).order_by('due_date', 'status_order')#.filter(status='DUE')
+        objects = TaskItem.objects.filter(author=self.request.user).extra(select={"status_order":"case when status='OVERDUE' then 0 when status = 'DUE' then 1 else 2 end"}).order_by('due_date', 'status_order').filter(~Q(status='COMPLETE'))#.filter(status='DUE')
         for obj in objects:
             if obj.due_date < today.date() and obj.status == 'DUE':
                 obj.status = 'OVERDUE'
