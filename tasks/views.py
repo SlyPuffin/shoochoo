@@ -19,13 +19,26 @@ def task_complete(request, pk):
 
 # Create your views here.
 class TaskListView(LoginRequiredMixin, ListView):
-    #model = TaskItem
     template_name = "home.html"
 
     def get_queryset(self):
         today = timezone.datetime.today().replace(hour=0, minute=0, second=0, microsecond=0)
-        return TaskItem.objects.filter(author=self.request.user).filter(due_date__gte=today).extra(select={"status_order":"case when status='DUE' then 0 when status = 'COMPLETE' then 1 else 2 end"}).order_by('due_date', 'status_order')#.filter(status='DUE')
+        objects = TaskItem.objects.filter(author=self.request.user).extra(select={"status_order":"case when status='OVERDUE' then 0 when status = 'DUE' then 1 else 2 end"}).order_by('due_date', 'status_order')#.filter(status='DUE')
+        for obj in objects:
+            if obj.due_date < today.date() and obj.status == 'DUE':
+                obj.status = 'OVERDUE'
+                obj.save()
 
+        return objects
+
+#.filter(due_date__gte=today)
+
+class CompletedTaskListView(LoginRequiredMixin, ListView):
+    template_name = "home.html"
+
+    def get_queryset(self):
+        objects = TaskItem.objects.filter(author=self.request.user).filter(status='COMPLETE')
+        return objects
 
 class TaskDetailView(LoginRequiredMixin, DetailView):
     model = TaskItem

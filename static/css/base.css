@@ -58,8 +58,17 @@
     rgb(191, 255, 200, 0.2) 1%
   );
 }
+.task-overdue {
+  background-color: rgb(247, 247, 229);
+  opacity: 0.8;
+  background-image: repeating-conic-gradient(
+    at 40% 80%,
+    rgba(255, 0, 0, 0.2) 0%,
+    rgba(255, 191, 191, 0.2) 1%
+  );
+}
 .task-row-element {
-  padding: 1rem;
+  padding: 0.5rem;
 }
 
 .themed-grid-col {
