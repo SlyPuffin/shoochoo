@@ -48,35 +48,36 @@
         >Delete</a
       >
     </div>
-  </div>
-  {% else %}
-  <div class="row task-row-element">
-    <h4 class="col task-row-element">{{ task.title }}</h4>
-    <div
-      class="col btn-group task-row-element"
-      role="group"
-      aria-label="Task Buttons"
-    >
-      <a
-        href="{{ task.get_absolute_url }}"
-        role="button"
-        class="btn btn-outline-info"
-        >Details</a
+    {% else %}
+    <div class="row task-row-element">
+      <h4 class="col task-row-element">{{ task.title }}</h4>
+      <div
+        class="col btn-group task-row-element"
+        role="group"
+        aria-label="Task Buttons"
       >
-      <a
-        href="{% url 'task_edit' task.pk %}"
-        role="button"
-        class="btn btn-outline-secondary"
-        >Edit</a
-      >
-      <a
-        href="{% url 'task_delete' task.pk %}"
-        role="button"
-        class="btn btn-outline-danger"
-        >Delete</a
-      >
+        <a
+          href="{{ task.get_absolute_url }}"
+          role="button"
+          class="btn btn-outline-info"
+          >Details</a
+        >
+        <a
+          href="{% url 'task_edit' task.pk %}"
+          role="button"
+          class="btn btn-outline-secondary"
+          >Edit</a
+        >
+        <a
+          href="{% url 'task_delete' task.pk %}"
+          role="button"
+          class="btn btn-outline-danger"
+          >Delete</a
+        >
+      </div>
     </div>
+    {% endif %}
   </div>
-  {% endif %} {% endfor %}
+  {% endfor %}
 </main>
 {% endblock content %}
