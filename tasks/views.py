@@ -24,7 +24,7 @@ class TaskListView(LoginRequiredMixin, ListView):
 
     def get_queryset(self):
         today = timezone.datetime.today().replace(hour=0, minute=0, second=0, microsecond=0)
-        objects = TaskItem.objects.filter(author=self.request.user).extra(select={"status_order":"case when status='OVERDUE' then 0 when status = 'DUE' then 1 else 2 end"}).order_by('due_date', 'status_order').filter(~Q(status='COMPLETE'))#.filter(status='DUE')
+        objects = TaskItem.objects.filter(author=self.request.user).extra(select={"status_order":"case when status='OVERDUE' then 0 when status = 'DUE' then 1 else 2 end"}).order_by('due_date', 'status_order').exclude(~Q(due_date=today), status='COMPLETE')#.filter(~Q(status='COMPLETE', due_date__lt=today))#.filter(status='DUE')
         for obj in objects:
             if obj.due_date < today.date() and obj.status == 'DUE':
                 obj.status = 'OVERDUE'

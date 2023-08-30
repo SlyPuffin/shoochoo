@@ -32,4 +32,5 @@ class TaskItem(models.Model):
 
     def complete(self):
         self.status = 'COMPLETE'
-        self.save(update_fields=["status"])
+        self.due_date = timezone.datetime.today()
+        self.save(update_fields=["status", "due_date"])
