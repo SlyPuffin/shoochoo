@@ -53,7 +53,7 @@
   background-color: rgb(229, 229, 247);
   opacity: 0.8;
   background-image: repeating-conic-gradient(
-    at 40% 80%,
+    at 50% 50%,
     rgb(0, 255, 38, 0.2) 0%,
     rgb(191, 255, 200, 0.2) 1%
   );
@@ -62,7 +62,7 @@
   background-color: rgb(247, 247, 229);
   opacity: 0.8;
   background-image: repeating-conic-gradient(
-    at 40% 80%,
+    at 50% 50%,
     rgba(255, 0, 0, 0.2) 0%,
     rgba(255, 191, 191, 0.2) 1%
   );
