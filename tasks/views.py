@@ -30,6 +30,7 @@ class TaskListView(LoginRequiredMixin, ListView):
                 obj.status = 'OVERDUE'
                 obj.save()
 
+        objects = objects.annotate(due_today=Q(due_date=today.date()) & Q(status='DUE'))
         return objects
 
 #.filter(due_date__gte=today)

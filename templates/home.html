@@ -1,61 +1,129 @@
 {% extends "base.html" %} {% block content %}
 <main class="task-list w-100 m-auto">
-  {% for task in object_list %}
-  <div
-    class="container text-center border border-secondary task-row rounded-3 {% if task.status == 'COMPLETE' %} task-complete {% elif task.status == 'OVERDUE' %} task-overdue {% else %} task-due {% endif %}"
-  >
-    {% if task.status != 'COMPLETE' %}
-    <div class="row task-row-element">
-      <h1 class="col"><strong>{{ task.title }}</strong></h1>
-    </div>
-    <div class="row">
-      <h4 class="col text-body-secondary">{{ task.status }}</h4>
-      <a
-        href="{% url 'task_focus' task.pk %}"
-        role="button"
-        class="col focus-button btn btn-lg btn-outline-primary"
-        >Focus</a
+  <div class="container justify-content-center row task-row">
+    <div class="col-3">
+      <button
+        class="btn btn-outline-primary"
+        type="button"
+        data-bs-toggle="collapse"
+        data-bs-target="#timeFilterRadios"
+        aria-expanded="false"
+        aria-controls="timeFilterRadios"
       >
-      <h4 class="col text-body-secondary">{{ task.due_date }}</h4>
+        Filter by Time
+      </button>
+      <div class="collapse" id="timeFilterRadios">
+        <div class="form-check">
+          <input
+            class="form-check-input"
+            type="radio"
+            name="timeFilters"
+            id="birdsEye"
+            value="option1"
+            checked
+          />
+          <label class="form-check-label" for="birdsEye"> Bird's Eye </label>
+        </div>
+        <div class="form-check">
+          <input
+            class="form-check-input"
+            type="radio"
+            name="timeFilters"
+            id="today"
+            value="option2"
+          />
+          <label class="form-check-label" for="today"> Today </label>
+        </div>
+        <div class="form-check">
+          <input
+            class="form-check-input"
+            type="radio"
+            name="timeFilters"
+            id="overdue"
+            value="option3"
+          />
+          <label class="form-check-label" for="overdue"> Overdue Only </label>
+        </div>
+      </div>
     </div>
+    <div class="col-3" hidden>
+      <button
+        class="btn btn-outline-primary"
+        type="button"
+        data-bs-toggle="collapse"
+        data-bs-target="#categoryFilterRadios"
+        aria-expanded="false"
+        aria-controls="categoryFilterRadios"
+      >
+        Filter by Category
+      </button>
+      <div class="collapse" id="categoryFilterRadios">
+        <div class="form-check">
+          <input
+            class="form-check-input"
+            type="checkbox"
+            name="categoryFilters"
+            id="cat1"
+            value="option1"
+            checked
+          />
+          <label class="form-check-label" for="cat1"> Code </label>
+        </div>
+        <div class="form-check">
+          <input
+            class="form-check-input"
+            type="checkbox"
+            name="categoryFilters"
+            id="cat2"
+            value="option2"
+            checked
+          />
+          <label class="form-check-label" for="cat2"> Chores </label>
+        </div>
+        <div class="form-check">
+          <input
+            class="form-check-input"
+            type="checkbox"
+            name="categoryFilters"
+            id="cat3"
+            value="option3"
+            checked
+          />
+          <label class="form-check-label" for="cat3"> Contact </label>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div id="objList">
+    {% for task in object_list %}
     <div
-      class="btn-group task-row-element"
-      role="group"
-      aria-label="Task Buttons"
+      class="container text-center border border-secondary task-row rounded-3 {% if task.status == 'COMPLETE' %} task-complete {% elif task.status == 'OVERDUE' %} task-overdue {% else %} task-due {% endif %} {% if task.due_today == True %} due-today {% endif %}"
     >
-      <a
-        href="{% url 'task_complete' task.pk %}"
-        role="button"
-        class="btn btn-outline-success"
-        >Complete</a
-      >
-      <a
-        href="{{ task.get_absolute_url }}"
-        role="button"
-        class="btn btn-outline-info"
-        >Details</a
-      >
-      <a
-        href="{% url 'task_edit' task.pk %}"
-        role="button"
-        class="btn btn-outline-secondary"
-        >Edit</a
-      >
-      <a
-        href="{% url 'task_delete' task.pk %}"
-        role="button"
-        class="btn btn-outline-danger"
-        >Delete</a
-      >
-    </div>
-    {% else %}
-    <div class="row task-row-element">
-      <h4 class="col task-row-element">{{ task.title }}</h4>
+      {% if task.status != 'COMPLETE' %}
+      <div class="row task-row-element">
+        <h1 class="col"><strong>{{ task.title }}</strong></h1>
+      </div>
+      <div class="row">
+        <h4 class="col text-body-secondary">{{ task.status }}</h4>
+        <a
+          href="{% url 'task_focus' task.pk %}"
+          role="button"
+          class="col focus-button btn btn-lg btn-outline-primary"
+          >Focus</a
+        >
+        <h4 class="col text-body-secondary">{{ task.due_date }}</h4>
+      </div>
       <div
-        class="col btn-group task-row-element"
+        class="btn-group task-row-element"
         role="group"
         aria-label="Task Buttons"
       >
+        <a
+          href="{% url 'task_complete' task.pk %}"
+          role="button"
+          class="btn btn-outline-success"
+          >Complete</a
+        >
         <a
           href="{{ task.get_absolute_url }}"
           role="button"
@@ -75,9 +143,107 @@
           >Delete</a
         >
       </div>
+      {% else %}
+      <div class="row task-row-element">
+        <h4 class="col task-row-element">{{ task.title }}</h4>
+        <div
+          class="col btn-group task-row-element"
+          role="group"
+          aria-label="Task Buttons"
+        >
+          <a
+            href="{{ task.get_absolute_url }}"
+            role="button"
+            class="btn btn-outline-info"
+            >Details</a
+          >
+          <a
+            href="{% url 'task_edit' task.pk %}"
+            role="button"
+            class="btn btn-outline-secondary"
+            >Edit</a
+          >
+          <a
+            href="{% url 'task_delete' task.pk %}"
+            role="button"
+            class="btn btn-outline-danger"
+            >Delete</a
+          >
+        </div>
+      </div>
+      {% endif %}
     </div>
-    {% endif %}
+    {% endfor %}
   </div>
-  {% endfor %}
 </main>
+<script>
+  const list = document.getElementById("objList");
+  const overdueRadio = document.getElementById("overdue");
+  const todayRadio = document.getElementById("today");
+  const birdsEyeRadio = document.getElementById("birdsEye");
+  var overdueExists = false;
+  var todayExists = false;
+
+  function filterOverdue() {
+    for (const child of list.children) {
+      if (!child.className.includes("task-overdue")) {
+        child.style.display = "none";
+      }
+    }
+  }
+  function filterToday() {
+    for (const child of list.children) {
+      if (
+        !child.className.includes("task-overdue") &&
+        !child.className.includes("due-today")
+      ) {
+        child.style.display = "none";
+      }
+    }
+  }
+  function filterByTime(options) {
+    for (const child of list.children) {
+      child.style.display = "block";
+    }
+    if (options == "overdue") {
+      filterOverdue();
+    } else if (options == "today") {
+      filterToday();
+    }
+  }
+
+  overdueRadio.addEventListener("change", function (event) {
+    filterByTime("overdue");
+  });
+  todayRadio.addEventListener("change", function (event) {
+    filterByTime("today");
+  });
+  birdsEyeRadio.addEventListener("change", function (event) {
+    filterByTime("birdsEye");
+  });
+
+  if (list) {
+    for (const child of list.children) {
+      console.log(child.className);
+      if (child.className.includes("task-overdue")) {
+        overdueExists = true;
+      }
+      if (child.className.includes("due-today")) {
+        todayExists = true;
+      }
+    }
+  }
+  if (overdueExists) {
+    overdueRadio.checked = true;
+    filterOverdue();
+  } else if (todayExists) {
+    overdueRadio.disabled = true;
+    todayRadio.checked = true;
+    filterToday();
+  } else {
+    overdueRadio.disabled = true;
+    todayRadio.disabled = true;
+    birdsEyeRadio.checked = true;
+  }
+</script>
 {% endblock content %}
