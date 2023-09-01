@@ -36,7 +36,7 @@ class TaskListView(LoginRequiredMixin, ListView):
 #.filter(due_date__gte=today)
 
 class CompletedTaskListView(LoginRequiredMixin, ListView):
-    template_name = "home.html"
+    template_name = "completed.html"
 
     def get_queryset(self):
         objects = TaskItem.objects.filter(author=self.request.user).filter(status='COMPLETE')

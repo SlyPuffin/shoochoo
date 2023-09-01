@@ -2,49 +2,9 @@
 <main class="task-list w-100 m-auto">
   <div class="container justify-content-center row task-row">
     <div class="col-sm-4 filter-button">
-      <button
-        class="btn btn-outline-primary"
-        type="button"
-        data-bs-toggle="collapse"
-        data-bs-target="#timeFilterRadios"
-        aria-expanded="false"
-        aria-controls="timeFilterRadios"
+      <a class="btn btn-outline-primary" role="button" href="{% url 'home' %}"
+        ><- Main list</a
       >
-        Filter by Time
-      </button>
-      <div class="collapse" id="timeFilterRadios">
-        <div class="form-check">
-          <input
-            class="form-check-input"
-            type="radio"
-            name="timeFilters"
-            id="birdsEye"
-            value="option1"
-            checked
-          />
-          <label class="form-check-label" for="birdsEye"> Bird's Eye </label>
-        </div>
-        <div class="form-check">
-          <input
-            class="form-check-input"
-            type="radio"
-            name="timeFilters"
-            id="today"
-            value="option2"
-          />
-          <label class="form-check-label" for="today"> Today </label>
-        </div>
-        <div class="form-check">
-          <input
-            class="form-check-input"
-            type="radio"
-            name="timeFilters"
-            id="overdue"
-            value="option3"
-          />
-          <label class="form-check-label" for="overdue"> Overdue Only </label>
-        </div>
-      </div>
     </div>
     <div class="col-sm-4 filter-button">
       <button
@@ -92,14 +52,6 @@
           <label class="form-check-label" for="cat3"> Contact </label>
         </div>
       </div>
-    </div>
-    <div class="col-sm-4 filter-button">
-      <a
-        class="btn btn-outline-primary"
-        role="button"
-        href="{% url 'completed_tasks' %}"
-        >Completed Tasks -></a
-      >
     </div>
   </div>
   <div id="objList">
