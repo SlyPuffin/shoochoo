@@ -2,6 +2,11 @@
 <main class="form-task text-center w-100 m-auto">
   <p><a href="{% url 'home' %}">← Back to Task List</a></p>
   <h2>{{ object.title }}</h2>
+  <div class="row">
+    {% for tag in object.tags.all %}
+    <h6 class="col-sm">#{{tag}}</h6>
+    {% endfor %}
+  </div>
   <p>{{ object.body|linebreaksbr }}</p>
   {% if object.status != 'COMPLETE' %}
   <a

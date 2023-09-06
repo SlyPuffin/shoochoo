@@ -4,6 +4,11 @@
 >
   <p><a href="{{ object.get_absolute_url }}">← Back to Task Details</a></p>
   <h1>{{ object.title }}</h1>
+  <div class="row">
+    {% for tag in object.tags.all %}
+    <h6 class="col-sm">#{{tag}}</h6>
+    {% endfor %}
+  </div>
   <p class="lead">{{ object.body|linebreaksbr }}</p>
   {% if object.estimated_time %}
   <div id="timer" class="lead">
