@@ -261,9 +261,7 @@
         }
       }
       if (!tagMatches) {
-        if (tags.includes("notag") && isNoTag(child.className)) {
-          child.style.display = "block";
-        } else {
+        if (!(tags.includes("notag") && isNoTag(child.className))) {
           child.style.display = "none";
         }
       }
