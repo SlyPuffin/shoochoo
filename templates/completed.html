@@ -11,45 +11,78 @@
         class="btn btn-outline-primary"
         type="button"
         data-bs-toggle="collapse"
-        data-bs-target="#categoryFilterRadios"
+        data-bs-target="#tagFilterRadios"
         aria-expanded="false"
-        aria-controls="categoryFilterRadios"
+        aria-controls="tagFilterRadios"
       >
-        Filter by Category
+        Filter by Tag
       </button>
-      <div class="collapse" id="categoryFilterRadios">
+      <div class="collapse" id="tagFilterRadios">
         <div class="form-check">
           <input
             class="form-check-input"
             type="checkbox"
-            name="categoryFilters"
-            id="cat1"
-            value="option1"
+            name="tagFilters"
+            id="notag"
+            value="tag0"
             checked
           />
-          <label class="form-check-label" for="cat1"> Code </label>
+          <label class="form-check-label" for="notag"> No Tags </label>
         </div>
         <div class="form-check">
           <input
             class="form-check-input"
             type="checkbox"
-            name="categoryFilters"
-            id="cat2"
-            value="option2"
+            name="tagFilters"
+            id="work"
+            value="tag1"
             checked
           />
-          <label class="form-check-label" for="cat2"> Chores </label>
+          <label class="form-check-label" for="work"> Work </label>
         </div>
         <div class="form-check">
           <input
             class="form-check-input"
             type="checkbox"
-            name="categoryFilters"
-            id="cat3"
-            value="option3"
+            name="tagFilters"
+            id="health"
+            value="tag2"
             checked
           />
-          <label class="form-check-label" for="cat3"> Contact </label>
+          <label class="form-check-label" for="health"> Health </label>
+        </div>
+        <div class="form-check">
+          <input
+            class="form-check-input"
+            type="checkbox"
+            name="tagFilters"
+            id="passion"
+            value="tag3"
+            checked
+          />
+          <label class="form-check-label" for="passion"> Passion </label>
+        </div>
+        <div class="form-check">
+          <input
+            class="form-check-input"
+            type="checkbox"
+            name="tagFilters"
+            id="community"
+            value="tag4"
+            checked
+          />
+          <label class="form-check-label" for="community"> Community </label>
+        </div>
+        <div class="form-check">
+          <input
+            class="form-check-input"
+            type="checkbox"
+            name="tagFilters"
+            id="misc"
+            value="tag5"
+            checked
+          />
+          <label class="form-check-label" for="misc"> Miscellaneous </label>
         </div>
       </div>
     </div>
@@ -57,7 +90,7 @@
   <div id="objList">
     {% for task in object_list %}
     <div
-      class="container text-center border border-secondary task-row rounded-3 {% if task.status == 'COMPLETE' %} task-complete {% elif task.status == 'OVERDUE' %} task-overdue {% else %} task-due {% endif %} {% if task.due_today == True %} due-today {% endif %}"
+      class="container text-center border border-secondary task-row rounded-3 {% if task.status == 'COMPLETE' %} task-complete {% elif task.status == 'OVERDUE' %} task-overdue {% else %} task-due {% endif %} {% if task.due_today == True %} due-today {% endif %} {% for tag in task.tags.all %}{{tag}} {% endfor %}"
     >
       {% if task.status != 'COMPLETE' %}
       <div class="row task-row-element">
@@ -138,72 +171,142 @@
 </main>
 <script>
   const list = document.getElementById("objList");
-  const overdueRadio = document.getElementById("overdue");
-  const todayRadio = document.getElementById("today");
-  const birdsEyeRadio = document.getElementById("birdsEye");
-  var overdueExists = false;
-  var todayExists = false;
+  const notagCheckbox = document.getElementById("notag");
+  const workCheckbox = document.getElementById("work");
+  const healthCheckbox = document.getElementById("health");
+  const passionCheckbox = document.getElementById("passion");
+  const communityCheckbox = document.getElementById("community");
+  const miscCheckbox = document.getElementById("misc");
+  var noTagExists = false;
+  var workTagExists = false;
+  var healthTagExists = false;
+  var passionTagExists = false;
+  var communityTagExists = false;
+  var miscTagExists = false;
 
-  function filterOverdue() {
+  function isNoTag(className) {
+    let noTags = true;
+    if (className.includes("Work")) {
+      noTags = false;
+    } else if (className.includes("Health")) {
+      noTags = false;
+    } else if (className.includes("Passion")) {
+      noTags = false;
+    } else if (className.includes("Community")) {
+      noTags = false;
+    } else if (className.includes("Miscellaneous")) {
+      noTags = false;
+    }
+    return noTags;
+  }
+  function filterByTags(tags) {
     for (const child of list.children) {
-      if (!child.className.includes("task-overdue")) {
-        child.style.display = "none";
+      let tagMatches = false;
+      for (const tag of tags) {
+        if (child.className.includes(tag)) {
+          tagMatches = true;
+        }
+      }
+      if (!tagMatches) {
+        if (tags.includes("notag") && isNoTag(child.className)) {
+          child.style.display = "block";
+        } else {
+          child.style.display = "none";
+        }
       }
     }
   }
-  function filterToday() {
-    for (const child of list.children) {
-      if (
-        !child.className.includes("task-overdue") &&
-        !child.className.includes("due-today")
-      ) {
-        child.style.display = "none";
-      }
-    }
-  }
-  function filterByTime(options) {
+  function filterTasks() {
     for (const child of list.children) {
       child.style.display = "block";
     }
-    if (options == "overdue") {
-      filterOverdue();
-    } else if (options == "today") {
-      filterToday();
+
+    let tagArray = new Array();
+    if (notagCheckbox.checked) {
+      tagArray.push("notag");
     }
+    if (workCheckbox.checked) {
+      tagArray.push("Work");
+    }
+    if (healthCheckbox.checked) {
+      tagArray.push("Health");
+    }
+    if (passionCheckbox.checked) {
+      tagArray.push("Passion");
+    }
+    if (communityCheckbox.checked) {
+      tagArray.push("Community");
+    }
+    if (miscCheckbox.checked) {
+      tagArray.push("Miscellaneous");
+    }
+    filterByTags(tagArray);
   }
 
-  overdueRadio.addEventListener("change", function (event) {
-    filterByTime("overdue");
+  notagCheckbox.addEventListener("change", function (event) {
+    filterTasks();
   });
-  todayRadio.addEventListener("change", function (event) {
-    filterByTime("today");
+  workCheckbox.addEventListener("change", function (event) {
+    filterTasks();
   });
-  birdsEyeRadio.addEventListener("change", function (event) {
-    filterByTime("birdsEye");
+  healthCheckbox.addEventListener("change", function (event) {
+    filterTasks();
+  });
+  passionCheckbox.addEventListener("change", function (event) {
+    filterTasks();
+  });
+  communityCheckbox.addEventListener("change", function (event) {
+    filterTasks();
+  });
+  miscCheckbox.addEventListener("change", function (event) {
+    filterTasks();
   });
 
   if (list) {
     for (const child of list.children) {
-      console.log(child.className);
-      if (child.className.includes("task-overdue")) {
-        overdueExists = true;
+      if (child.className.includes("Work")) {
+        workTagExists = true;
       }
-      if (child.className.includes("due-today")) {
-        todayExists = true;
+      if (child.className.includes("Health")) {
+        healthTagExists = true;
+      }
+      if (child.className.includes("Passion")) {
+        passionTagExists = true;
+      }
+      if (child.className.includes("Community")) {
+        communityTagExists = true;
+      }
+      if (child.className.includes("Miscellaneous")) {
+        miscTagExists = true;
+      }
+      if (isNoTag(child.className)) {
+        noTagExists = true;
       }
     }
   }
-  if (overdueExists) {
-    overdueRadio.checked = true;
-    filterOverdue();
-  } else if (todayExists) {
-    overdueRadio.disabled = true;
-    todayRadio.checked = true;
-    filterToday();
-  } else {
-    overdueRadio.disabled = true;
-    todayRadio.disabled = true;
-    birdsEyeRadio.checked = true;
+  if (!noTagExists) {
+    notagCheckbox.disabled = true;
+    notagCheckbox.checked = false;
+  }
+  if (!workTagExists) {
+    workCheckbox.disabled = true;
+    workCheckbox.checked = false;
+  }
+  if (!healthTagExists) {
+    healthCheckbox.disabled = true;
+    healthCheckbox.checked = false;
+  }
+  if (!passionTagExists) {
+    passionCheckbox.disabled = true;
+    passionCheckbox.checked = false;
+  }
+  if (!communityTagExists) {
+    communityCheckbox.disabled = true;
+    communityCheckbox.checked = false;
+  }
+  if (!miscTagExists) {
+    miscCheckbox.disabled = true;
+    miscCheckbox.checked = false;
   }
 </script>
 {% endblock content %}
