@@ -10,6 +10,8 @@ header {
   position: fixed;
   top: 0;
   width: 100%;
+  background-color: white;
+  z-index: 100;
 }
 @media (min-width: 600px) {
   .main-body {
