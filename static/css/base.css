@@ -6,6 +6,21 @@
   text-shadow: none; /* Prevent inheritance from `body` */
 }
 
+header {
+  position: fixed;
+  top: 0;
+  width: 100%;
+}
+@media (min-width: 600px) {
+  .main-body {
+    margin-top: 5rem;
+  }
+}
+@media (max-width: 599px) {
+  .main-body {
+    margin-top: 8rem;
+  }
+}
 /* Cover (Focus) Screen */
 .horizontal-spacer {
   padding-left: 0.1rem;
