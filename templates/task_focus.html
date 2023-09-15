@@ -22,7 +22,12 @@
   </div>
   {% endif %}
 </main>
+<script src="http://unpkg.com/tone"></script>
 <script>
+  const delay = new Tone.PingPongDelay("4n", 0.2).toDestination();
+  const synth = new Tone.PolySynth().connect(delay);
+  synth.toDestination();
+  synth.volume.value = -9;
   function makeTimer(endTime) {
     var now = new Date();
     var now = Date.parse(now) / 1000;
@@ -49,6 +54,11 @@
       document.getElementById(
         "timer"
       ).innerHTML = `<a href="{% url 'task_complete' object.pk %}" role="button" class="btn btn-lg btn-outline-success">Complete</a>`;
+      const now = Tone.now();
+      synth.triggerAttackRelease("E5", "8n", now);
+      synth.triggerAttackRelease("C5", "8n", now + 0.1);
+      synth.triggerAttackRelease("G5", "8n", now + 0.2);
+      synth.triggerAttackRelease("B5", "8n", now + 0.3);
     } else {
       document.getElementById("remaining-time").innerText =
         minutes + ":" + seconds;
