@@ -12,7 +12,7 @@
   <p class="lead">{{ object.body|linebreaksbr }}</p>
   {% if object.estimated_time %}
   <div id="timer" class="lead">
-    <h1 id="remaining-time">{{ object.estimated_time }}</h1>
+    <h1 id="remaining-time">{{ object.estimated_time }}:00</h1>
     <!--<a
       href="#"
       role="button"
@@ -22,61 +22,64 @@
   </div>
   {% endif %}
 </main>
-<script src="http://unpkg.com/tone"></script>
+<script src="https://unpkg.com/tone@14.7.77/build/Tone.js"></script>
 <script>
-  const delay = new Tone.PingPongDelay("4n", 0.2).toDestination();
-  const synth = new Tone.PolySynth().connect(delay);
-  synth.toDestination();
-  synth.volume.value = -9;
-  function makeTimer(endTime) {
-    var now = new Date();
-    var now = Date.parse(now) / 1000;
-    var timeLeft = endTime - now;
+  window.onload = function () {
+    const delay = new Tone.PingPongDelay("4n", 0.2).toDestination();
+    const synth = new Tone.PolySynth().connect(delay);
+    synth.toDestination();
+    synth.volume.value = -9;
+    function makeTimer(endTime) {
+      var now = new Date();
+      var now = Date.parse(now) / 1000;
+      var timeLeft = endTime - now;
 
-    var days = Math.floor(timeLeft / 86400);
-    var hours = Math.floor((timeLeft - days * 86400) / 3600);
-    var minutes = Math.floor((timeLeft - days * 86400 - hours * 3600) / 60);
-    var seconds = Math.floor(
-      timeLeft - days * 86400 - hours * 3600 - minutes * 60
-    );
+      var days = Math.floor(timeLeft / 86400);
+      var hours = Math.floor((timeLeft - days * 86400) / 3600);
+      var minutes = Math.floor((timeLeft - days * 86400 - hours * 3600) / 60);
+      var seconds = Math.floor(
+        timeLeft - days * 86400 - hours * 3600 - minutes * 60
+      );
 
-    if (minutes < "10") {
-      minutes = "0" + minutes;
-    }
-    if (seconds < "10") {
-      seconds = "0" + seconds;
-    }
-
-    if (minutes < 1 && seconds < 1) {
-      if (document.getElementById("remaining-time")) {
-        document.getElementById("remaining-time").innerText = "";
+      if (minutes < "10") {
+        minutes = "0" + minutes;
       }
-      document.getElementById(
-        "timer"
-      ).innerHTML = `<a href="{% url 'task_complete' object.pk %}" role="button" class="btn btn-lg btn-outline-success">Complete</a>`;
-      const now = Tone.now();
-      synth.triggerAttackRelease("E5", "8n", now);
-      synth.triggerAttackRelease("C5", "8n", now + 0.1);
-      synth.triggerAttackRelease("G5", "8n", now + 0.2);
-      synth.triggerAttackRelease("B5", "8n", now + 0.3);
-    } else {
-      document.getElementById("remaining-time").innerText =
-        minutes + ":" + seconds;
+      if (seconds < "10") {
+        seconds = "0" + seconds;
+      }
+
+      if (minutes < 1 && seconds < 1) {
+        if (document.getElementById("remaining-time")) {
+          document.getElementById("remaining-time").innerText = "";
+        }
+        document.getElementById(
+          "timer"
+        ).innerHTML = `<a href="{% url 'task_complete' object.pk %}" role="button" class="btn btn-lg btn-outline-success">Complete</a>`;
+        const now = Tone.now();
+        synth.triggerAttackRelease("E5", "8n", now);
+        synth.triggerAttackRelease("C5", "8n", now + 0.1);
+        synth.triggerAttackRelease("G5", "8n", now + 0.2);
+        synth.triggerAttackRelease("B5", "8n", now + 0.3);
+      } else {
+        document.getElementById("remaining-time").innerText =
+          minutes + ":" + seconds;
+      }
     }
-  }
 
-  var now = new Date();
-  var diff = document.getElementById("remaining-time").innerText;
-  if (!diff) {
-    diff = 15;
-  }
-  var endTime = new Date(now.getTime() + diff * 60000);
+    var now = new Date();
+    var diff = document.getElementById("remaining-time").innerText;
+    diff = diff.substring(0, diff.indexOf(":"));
+    if (!diff) {
+      diff = 15;
+    }
+    var endTime = new Date(now.getTime() + diff * 60000);
 
-  var now = Date.parse(now) / 1000;
-  var endTime = Date.parse(endTime) / 1000;
+    var now = Date.parse(now) / 1000;
+    var endTime = Date.parse(endTime) / 1000;
 
-  setInterval(function () {
-    makeTimer(endTime);
-  }, 1000);
+    setInterval(function () {
+      makeTimer(endTime);
+    }, 1000);
+  };
 </script>
 {% endblock content %}
