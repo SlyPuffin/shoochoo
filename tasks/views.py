@@ -7,7 +7,7 @@ from datetime import datetime
 from .models import TaskItem
 from .forms import TaskUpdateForm, TaskCreateForm
 from django.utils import timezone
-from django.db.models import Q
+from django.db.models import Q, F, ExpressionWrapper, fields
 
 def task_complete(request, pk):
     task = get_object_or_404(TaskItem, pk=pk)
@@ -34,6 +34,11 @@ class TaskListView(LoginRequiredMixin, ListView):
                 obj.save()
 
         objects = objects.annotate(due_today=Q(due_date=today.date()) & Q(status='DUE'))
+        objects = objects.annotate(
+            time_remaining=ExpressionWrapper(
+                F('estimated_time') - F('elapsed_time'),
+                output_field=fields.IntegerField()
+            ))
         return objects
 
 #.filter(due_date__gte=today)

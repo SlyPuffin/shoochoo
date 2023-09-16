@@ -1,7 +1,11 @@
 {% extends "base.html" %} {% block content %}
 <main class="task-list w-100 m-auto">
   <div class="container justify-content-center row task-row">
-    <div class="col-sm-4 filter-button">
+    <div class="col-sm-2">
+      <h5 class="text-body-secondary"><b id="total-time"></b></h5>
+      <h7 class="text-body-secondary"><i>remaining</i></h7>
+    </div>
+    <div class="col-sm-3 filter-button">
       <button
         class="btn btn-outline-primary"
         type="button"
@@ -46,7 +50,7 @@
         </div>
       </div>
     </div>
-    <div class="col-sm-4 filter-button">
+    <div class="col-sm-3 filter-button">
       <button
         class="btn btn-outline-primary"
         type="button"
@@ -145,14 +149,21 @@
         <h1 class="col"><strong>{{ task.title }}</strong></h1>
       </div>
       <div class="row">
-        <h4 class="col text-body-secondary">{{ task.status }}</h4>
+        <div class="col">
+          <h4 class="text-body-secondary">{{ task.status }}</h4>
+          <h6 class="text-body-secondary">{{ task.due_date }}</h6>
+        </div>
         <a
           href="{% url 'task_focus' task.pk %}"
           role="button"
           class="col focus-button btn btn-lg btn-outline-primary"
           >Focus</a
         >
-        <h4 class="col text-body-secondary">{{ task.due_date }}</h4>
+        <p class="col text-body-secondary">
+          <b class="remaining-time">{{ task.time_remaining }}:00</b><br /><i
+            >remaining</i
+          >
+        </p>
       </div>
       <div
         class="btn-group task-row-element"
@@ -228,6 +239,7 @@
   const passionCheckbox = document.getElementById("passion");
   const communityCheckbox = document.getElementById("community");
   const miscCheckbox = document.getElementById("misc");
+  const totalTimeHeading = document.getElementById("total-time");
   var overdueExists = false;
   var todayExists = false;
   var noTagExists = false;
@@ -236,6 +248,7 @@
   var passionTagExists = false;
   var communityTagExists = false;
   var miscTagExists = false;
+  var totalTime = 0;
 
   function isNoTag(className) {
     let noTags = true;
@@ -252,6 +265,19 @@
     }
     return noTags;
   }
+  function parseRemainingTime(classesArr) {
+    let result = 0;
+    if (classesArr.length > 0) {
+      let timeRemainingClass = classesArr[0];
+      result = parseInt(
+        timeRemainingClass.innerText.substring(
+          0,
+          timeRemainingClass.innerText.indexOf(":")
+        )
+      );
+    }
+    return result;
+  }
   function filterByTags(tags) {
     for (const child of list.children) {
       let tagMatches = false;
@@ -263,6 +289,9 @@
       if (!tagMatches) {
         if (!(tags.includes("notag") && isNoTag(child.className))) {
           child.style.display = "none";
+          totalTime =
+            totalTime -
+            parseRemainingTime(child.getElementsByClassName("remaining-time"));
         }
       }
     }
@@ -271,6 +300,9 @@
     for (const child of list.children) {
       if (!child.className.includes("task-overdue")) {
         child.style.display = "none";
+        totalTime =
+          totalTime -
+          parseRemainingTime(child.getElementsByClassName("remaining-time"));
       }
     }
   }
@@ -281,12 +313,18 @@
         !child.className.includes("due-today")
       ) {
         child.style.display = "none";
+        totalTime =
+          totalTime -
+          parseRemainingTime(child.getElementsByClassName("remaining-time"));
       }
     }
   }
   function filterByTime(options, tags) {
     for (const child of list.children) {
       child.style.display = "block";
+      totalTime =
+        totalTime +
+        parseRemainingTime(child.getElementsByClassName("remaining-time"));
     }
     if (options == "overdue") {
       filterOverdue();
@@ -324,7 +362,9 @@
     if (miscCheckbox.checked) {
       tagArray.push("Miscellaneous");
     }
+    totalTime = 0;
     filterByTime(opt, tagArray);
+    totalTimeHeading.innerText = totalTime + ":00";
   }
 
   overdueRadio.addEventListener("change", function (event) {
@@ -357,6 +397,7 @@
   });
 
   if (list) {
+    totalTime = 0;
     for (const child of list.children) {
       if (child.className.includes("task-overdue")) {
         overdueExists = true;
@@ -382,6 +423,9 @@
       if (isNoTag(child.className)) {
         noTagExists = true;
       }
+      totalTime =
+        totalTime +
+        parseRemainingTime(child.getElementsByClassName("remaining-time"));
     }
   }
   if (overdueExists) {
@@ -396,6 +440,7 @@
     todayRadio.disabled = true;
     birdsEyeRadio.checked = true;
   }
+  totalTimeHeading.innerText = totalTime + ":00";
   if (!noTagExists) {
     notagCheckbox.disabled = true;
     notagCheckbox.checked = false;
