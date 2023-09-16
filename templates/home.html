@@ -288,10 +288,14 @@
       }
       if (!tagMatches) {
         if (!(tags.includes("notag") && isNoTag(child.className))) {
+          if (child.style.display === "block") {
+            totalTime =
+              totalTime -
+              parseRemainingTime(
+                child.getElementsByClassName("remaining-time")
+              );
+          }
           child.style.display = "none";
-          totalTime =
-            totalTime -
-            parseRemainingTime(child.getElementsByClassName("remaining-time"));
         }
       }
     }
